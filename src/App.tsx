@@ -26,7 +26,7 @@ export default function App(): JSX.Element {
   }
 
   async function SendNotification() {
-    const teste = await messaging().sendMessage({
+    const test = await messaging().sendMessage({
       to: 'https://fcm.googleapis.con/fcm/send',
       from: 'test',
       sentTime: 1,
@@ -35,7 +35,7 @@ export default function App(): JSX.Element {
         body: 'Hello, it is my test notification',
       },
     });
-    console.log(teste);
+    console.log(test);
   }
 
   useEffect(() => {
@@ -43,17 +43,13 @@ export default function App(): JSX.Element {
     dynamicLinks()
       .getInitialLink()
       .then(link => {
-        const saveLink = link ? link.url.split('?name=')[1] : 'Default';
-
-        if (!link || saveLink === 'Default') {
+        if (!link) {
           Linking.openURL('https://my-app-names-frontend.vercel.app/');
         }
 
-        if (saveLink !== 'Default') {
-          setName(saveLink);
-        }
+        setName(link ? link.url.split('?name=')[1] : 'Default');
       });
-  }, [requestUserPermission]);
+  }, []);
 
   return (
     <Container>
