@@ -10,6 +10,7 @@ import {
   ButtonNotification,
   ButtonNotificationText,
 } from './homeStyle';
+import api from './services/api';
 
 export default function App(): JSX.Element {
   const [name, setName] = useState('');
@@ -47,7 +48,11 @@ export default function App(): JSX.Element {
           Linking.openURL('https://my-app-names-frontend.vercel.app/');
         }
 
-        setName(link ? link.url.split('?name=')[1] : 'Default');
+        const id = link?.url.split('/name/')[1];
+
+        api.get(`/names/${id}`).then(response => {
+          setName(response.data.name ?? 'Default');
+        });
       });
   }, []);
 
